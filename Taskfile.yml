@@ -3,79 +3,12 @@
 version: "3"
 
 vars:
-  crdPath: /home/user/git/virtualization/crds
+  TAG: v0.0.1-dev0
 
 tasks:
-  build:
+  local-build:
     cmds:
       - go build ./cmd/d8-doc-ru-linter
-  vm:
-    deps: [build]
-    vars:
-      crd: virtualmachine
+  build:
     cmds:
-      - ./d8-doc-ru-linter -s {{.crdPath}}/{{.crd}}.yaml -d {{.crdPath}}/doc-ru-{{.crd}}.yaml -n {{.crdPath}}/doc-ru-{{.crd}}.yaml
-      - dyff between -b  {{.crdPath}}/doc-ru-{{.crd}}.yaml {{.crdPath}}/doc-ru-{{.crd}}.yaml
-
-  vd:
-    deps: [build]
-    vars:
-      crd: virtualdisk
-    cmds:
-      - ./d8-doc-ru-linter -s {{.crdPath}}/{{.crd}}.yaml -d {{.crdPath}}/doc-ru-{{.crd}}.yaml -n {{.crdPath}}/doc-ru-{{.crd}}.yaml
-      - dyff between -b  {{.crdPath}}/doc-ru-{{.crd}}.yaml {{.crdPath}}/doc-ru-{{.crd}}.yaml
-
-  vi:
-    deps: [build]
-    vars:
-      crd: virtualimage
-    cmds:
-      - ./d8-doc-ru-linter -s {{.crdPath}}/{{.crd}}.yaml -d {{.crdPath}}/doc-ru-{{.crd}}.yaml -n {{.crdPath}}/doc-ru-{{.crd}}.yaml
-      - dyff between -b  {{.crdPath}}/doc-ru-{{.crd}}.yaml {{.crdPath}}/doc-ru-{{.crd}}.yaml
-
-  cvi:
-    deps: [build]
-    vars:
-      crd: clustervirtualimage
-    cmds:
-      - ./d8-doc-ru-linter -s {{.crdPath}}/{{.crd}}.yaml -d {{.crdPath}}/doc-ru-{{.crd}}.yaml -n {{.crdPath}}/doc-ru-{{.crd}}.yaml
-      - dyff between -b  {{.crdPath}}/doc-ru-{{.crd}}.yaml {{.crdPath}}/doc-ru-{{.crd}}.yaml
-
-  vmbda:
-    deps: [build]
-    vars:
-      crd: virtualmachineblockdeviceattachment
-    cmds:
-      - ./d8-doc-ru-linter -s {{.crdPath}}/{{.crd}}.yaml -d {{.crdPath}}/doc-ru-{{.crd}}.yaml -n {{.crdPath}}/doc-ru-{{.crd}}.yaml
-      - dyff between -b  {{.crdPath}}/doc-ru-{{.crd}}.yaml {{.crdPath}}/doc-ru-{{.crd}}.yaml
-
-  vmip:
-    deps: [build]
-    vars:
-      crd: virtualmachineipaddressclaim
-    cmds:
-      - ./d8-doc-ru-linter -s {{.crdPath}}/{{.crd}}.yaml -d {{.crdPath}}/doc-ru-{{.crd}}.yaml -n {{.crdPath}}/doc-ru-{{.crd}}.yaml
-      - dyff between -b  {{.crdPath}}/doc-ru-{{.crd}}.yaml {{.crdPath}}/doc-ru-{{.crd}}.yaml
-
-  vmipl:
-    deps: [build]
-    vars:
-      crd: virtualmachineipaddresslease
-    cmds:
-      - ./d8-doc-ru-linter -s {{.crdPath}}/{{.crd}}.yaml -d {{.crdPath}}/doc-ru-{{.crd}}.yaml -n {{.crdPath}}/doc-ru-{{.crd}}.yaml
-      - dyff between -b  {{.crdPath}}/doc-ru-{{.crd}}.yaml {{.crdPath}}/doc-ru-{{.crd}}.yaml
-
-  vmcpu:
-    deps: [build]
-    vars:
-      crd: virtualmachinecpumodel
-    cmds:
-      - ./d8-doc-ru-linter -s {{.crdPath}}/{{.crd}}.yaml -d {{.crdPath}}/doc-ru-{{.crd}}.yaml -n {{.crdPath}}/doc-ru-{{.crd}}.yaml
-      - dyff between -b  {{.crdPath}}/doc-ru-{{.crd}}.yaml {{.crdPath}}/doc-ru-{{.crd}}.yaml
-
-  all:
-    deps: [vm, vd, vi, cvi, vmbda, vmip, vmipl, vmcpu]
-
-  clean:
-    cmds:
-      - rm home-user*.yaml
+      - werf build --repo docker.io/fl64/d8-doc-ru-linter --add-custom-tag={{ .TAG }}

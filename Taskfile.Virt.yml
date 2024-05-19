@@ -1,0 +1,66 @@
+# https://taskfile.dev
+
+version: "3"
+
+vars:
+  crdPath: /home/user/git/virtualization/crds
+
+tasks:
+  vm:
+    vars:
+      crd: virtualmachine
+    cmds:
+      - ./d8-doc-ru-linter -s {{.crdPath}}/{{.crd}}.yaml -d {{.crdPath}}/doc-ru-{{.crd}}.yaml -n {{.crdPath}}/doc-ru-{{.crd}}.yaml
+      - dyff between -b  {{.crdPath}}/doc-ru-{{.crd}}.yaml {{.crdPath}}/doc-ru-{{.crd}}.yaml
+
+  vd:
+    vars:
+      crd: virtualdisk
+    cmds:
+      - ./d8-doc-ru-linter -s {{.crdPath}}/{{.crd}}.yaml -d {{.crdPath}}/doc-ru-{{.crd}}.yaml -n {{.crdPath}}/doc-ru-{{.crd}}.yaml
+      - dyff between -b  {{.crdPath}}/doc-ru-{{.crd}}.yaml {{.crdPath}}/doc-ru-{{.crd}}.yaml
+
+  vi:
+    vars:
+      crd: virtualimage
+    cmds:
+      - ./d8-doc-ru-linter -s {{.crdPath}}/{{.crd}}.yaml -d {{.crdPath}}/doc-ru-{{.crd}}.yaml -n {{.crdPath}}/doc-ru-{{.crd}}.yaml
+      - dyff between -b  {{.crdPath}}/doc-ru-{{.crd}}.yaml {{.crdPath}}/doc-ru-{{.crd}}.yaml
+
+  cvi:
+    vars:
+      crd: clustervirtualimage
+    cmds:
+      - ./d8-doc-ru-linter -s {{.crdPath}}/{{.crd}}.yaml -d {{.crdPath}}/doc-ru-{{.crd}}.yaml -n {{.crdPath}}/doc-ru-{{.crd}}.yaml
+      - dyff between -b  {{.crdPath}}/doc-ru-{{.crd}}.yaml {{.crdPath}}/doc-ru-{{.crd}}.yaml
+
+  vmbda:
+    vars:
+      crd: virtualmachineblockdeviceattachment
+    cmds:
+      - ./d8-doc-ru-linter -s {{.crdPath}}/{{.crd}}.yaml -d {{.crdPath}}/doc-ru-{{.crd}}.yaml -n {{.crdPath}}/doc-ru-{{.crd}}.yaml
+      - dyff between -b  {{.crdPath}}/doc-ru-{{.crd}}.yaml {{.crdPath}}/doc-ru-{{.crd}}.yaml
+
+  vmip:
+    vars:
+      crd: virtualmachineipaddressclaim
+    cmds:
+      - ./d8-doc-ru-linter -s {{.crdPath}}/{{.crd}}.yaml -d {{.crdPath}}/doc-ru-{{.crd}}.yaml -n {{.crdPath}}/doc-ru-{{.crd}}.yaml
+      - dyff between -b  {{.crdPath}}/doc-ru-{{.crd}}.yaml {{.crdPath}}/doc-ru-{{.crd}}.yaml
+
+  vmipl:
+    vars:
+      crd: virtualmachineipaddresslease
+    cmds:
+      - ./d8-doc-ru-linter -s {{.crdPath}}/{{.crd}}.yaml -d {{.crdPath}}/doc-ru-{{.crd}}.yaml -n {{.crdPath}}/doc-ru-{{.crd}}.yaml
+      - dyff between -b  {{.crdPath}}/doc-ru-{{.crd}}.yaml {{.crdPath}}/doc-ru-{{.crd}}.yaml
+
+  vmcpu:
+    vars:
+      crd: virtualmachinecpumodel
+    cmds:
+      - ./d8-doc-ru-linter -s {{.crdPath}}/{{.crd}}.yaml -d {{.crdPath}}/doc-ru-{{.crd}}.yaml -n {{.crdPath}}/doc-ru-{{.crd}}.yaml
+      - dyff between -b  {{.crdPath}}/doc-ru-{{.crd}}.yaml {{.crdPath}}/doc-ru-{{.crd}}.yaml
+
+  all:
+    deps: [vm, vd, vi, cvi, vmbda, vmip, vmipl, vmcpu]

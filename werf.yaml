@@ -1,0 +1,35 @@
+---
+project: d8-doc-ru-linter
+configVersion: 1
+gitWorktree:
+  forceShallowClone: true
+---
+artifact: golang-builder
+from: golang:1.21-bookworm
+git:
+  - add: /
+    to: /usr/local/go/src/d8-doc-ru-linter
+    stageDependencies:
+      install:
+        - '**/*'
+shell:
+  install:
+    - cd /usr/local/go/src/d8-doc-ru-linter
+    - go mod download
+    - export GO111MODULE=on
+    - export GOOS=linux
+    - export CGO_ENABLED=0
+    - go build -v -ldflags "-w -s -X 'main.BuildDatetime=$(date --iso-8601=seconds)'" -o d8-doc-ru-linter ./cmd/d8-doc-ru-linter/main.go
+---
+image: fl64/d8-doc-ru-linter
+from: alpine:3.17
+import:
+  - artifact: golang-builder
+    add: /usr/local/go/src/d8-doc-ru-linter/d8-doc-ru-linter
+    to: /d8-doc-ru-linter
+    after: install
+docker:
+  WORKDIR: "/"
+  LABEL:
+    maintainer: "flsixtyfour@gmail.com"
+    org.label-schema.vcs-url: "https://github.com/fl64/d8-doc-ru-linter"
