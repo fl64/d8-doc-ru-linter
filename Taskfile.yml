@@ -5,6 +5,10 @@ version: "3"
 vars:
   TAG: v0.0.1-dev0
 
+includes:
+  virt:
+    taskfile: Taskfile.virt.yml
+    optional: true
 tasks:
   local-build:
     cmds:
