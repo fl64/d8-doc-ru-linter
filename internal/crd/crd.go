@@ -60,7 +60,7 @@ func (c CRD) CompareWith(dst CRD) (CRD, operation.OperationsList) {
 		// сравниваем
 		root := fmt.Sprintf("/spec/versions/%s/schema/openAPIV3Schema", originVersions.Name)
 		res, ops := originVersions.Schema.CompareWith(dst.Spec.Versions[realDestinationIndex].Schema, root)
-		c.Spec.Versions[originIndex].Schema.OpenAPIV3Schema = res
+		c.Spec.Versions[originIndex].Schema.OpenAPIV3Schema = res.OpenAPIV3Schema
 		operations.Operations = append(operations.Operations, ops.Operations...)
 	}
 	return c, operations
