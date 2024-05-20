@@ -3,7 +3,13 @@
 ## Build
 
 ```bash
-go build ./cmd/d8-doc-ru-linter
+task local-build
+```
+
+## Test
+
+```bash
+task test
 ```
 
 ## Usage
@@ -28,7 +34,7 @@ Options:
 Generate new normalized CRD
 
 ```bash
-./d8-doc-ru-linter -s /go/src/github.com/deckhouse/candi/openapi/node_group.yaml -n /go/src/github.com/deckhouse/candi/openapi/doc-ru-node_group.yaml
+./d8-doc-ru-linter -s ./testdata/src.yaml -n new.yaml
 ```
 
 Merge two CRDs
@@ -38,25 +44,51 @@ Merge two CRDs
 - The values of all other keys in destination will remain unchanged
 
 ```bash
-./d8-doc-ru-linter -s /go/src/github.com/deckhouse/candi/openapi/node_group.yaml -d /go/src/github.com/deckhouse/candi/openapi/doc-ru-node_group.yaml -n /go/src/github.com/deckhouse/candi/openapi/doc-ru-node_group.yaml
+./d8-doc-ru-linter -s ./testdata/src.yaml -d ./testdata/dst.yaml -n new.yaml
 ```
 
-Just check and fail if some diffs exist
+Just check if some diffs exist
 
 ```bash
-./d8-doc-ru-linter -s /go/src/github.com/deckhouse/candi/openapi/node_group.yaml -d /go/src/github.com/deckhouse/candi/openapi/doc-ru-node_group.yaml -n /dev/null --fail | jq .
+./d8-doc-ru-linter -s ./testdata/src.yaml -d ./testdata/dst.yaml -n /dev/null | jq .
 ```
 
 Output:
 
 ```json
 {
-  "count": 1,
+  "count": 4,
   "operations": [
     {
-      "path": "/spec/versions/v1alpha1/schema/openAPIV3Schema/properties/status",
+      "path": "/spec/versions/v2",
       "op": "add"
+    },
+    {
+      "path": "/spec/versions/v1/schema/openAPIV3Schema/properties/p1-object/properties/p1-1-object/properties/only-in-src",
+      "op": "add"
+    },
+    {
+      "path": "/spec/versions/v1/schema/openAPIV3Schema/properties/p1-object/properties/p1-1-object/properties/only-in-dst",
+      "op": "delete"
+    },
+    {
+      "path": "/spec/versions/v0",
+      "op": "delete"
     }
   ]
 }
+```
+
+Fail with exit code 33 if some diffs exist
+
+```bash
+./d8-doc-ru-linter -s ./testdata/src.yaml -d ./testdata/dst.yaml -n /dev/null --fail
+```
+
+Using docker
+
+```bash
+docker run -it -v ${PWD}:/tmp index.docker.io/fl64/d8-doc-ru-linter:v0.0.1-dev0 /d8-doc-ru-linter -s /tmp/testdata/src.yaml -d /tmp/testdata/dst.yaml -n /dev/null
+
+# {"count":4,"operations":[{"path":"/spec/versions/v2","op":"add"},{"path":"/spec/versions/v1/schema/openAPIV3Schema/properties/p1-object/properties/p1-1-object/properties/only-in-src","op":"add"},{"path":"/spec/versions/v1/schema/openAPIV3Schema/properties/p1-object/properties/p1-1-object/properties/only-in-dst","op":"delete"},{"path":"/spec/versions/v0","op":"delete"}]}
 ```
