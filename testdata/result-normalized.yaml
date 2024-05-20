@@ -1,0 +1,32 @@
+spec:
+  versions:
+    - name: v2
+      schema:
+        openAPIV3Schema:
+          description: (src) v2 - t1.test.group
+    - name: v1
+      schema:
+        openAPIV3Schema:
+          description: (src) v1 - t1.test.group
+          properties:
+            p1-object:
+              properties:
+                p1-1-object:
+                  description: (src) p1-1-object
+                  properties:
+                    only-in-src:
+                      description: (src) only-in-src-array
+                      items:
+                        properties:
+                          only-in-src-1-string:
+                            description: (src) only-in-src-1-string
+                    p1-1-1-string:
+                      description: (src) p1-1-1-string
+                    p1-1-2-string:
+                      description: (src) p1-1-2-string
+                    p1-1-3-array:
+                      description: (src) p1-1-2-array
+                      items:
+                        properties:
+                          p1-1-3-1-string:
+                            description: (src) p1-1-3-1-string
