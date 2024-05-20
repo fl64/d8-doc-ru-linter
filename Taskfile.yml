@@ -12,7 +12,11 @@ includes:
 tasks:
   local-build:
     cmds:
+      - go mod tidy
       - go build ./cmd/d8-doc-ru-linter
+  test:
+    cmds:
+      - go test -vet=off ./...
   build:
     cmds:
       - werf build --repo docker.io/fl64/d8-doc-ru-linter --add-custom-tag={{ .TAG }}
