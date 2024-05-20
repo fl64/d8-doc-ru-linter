@@ -13,9 +13,9 @@ import (
 var args struct {
 	Debug          bool   `arg:"--debug" help:"turn on debug mode"`
 	Fail           bool   `arg:"--fail" help:"fail if there are diffs"`
-	OriginCRD      string `arg:"required,-s,--source" help:"origin CRD"`
-	DestinationCRD string `arg:"-d,--destination" help:"destination CRD"`
-	OutputFileName string `arg:"-n,--new" help:"file to save merged CRD"`
+	OriginCRD      string `arg:"required,-s,--source" help:"origin CRD" placeholder:"<src crd>"`
+	DestinationCRD string `arg:"-d,--destination" help:"destination CRD" placeholder:"<dst crd>"`
+	OutputFileName string `arg:"-n,--new" help:"file to save merged CRD" placeholder:"<merged crd>"`
 }
 
 func main() {
